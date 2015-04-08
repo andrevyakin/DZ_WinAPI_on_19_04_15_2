@@ -4,10 +4,17 @@
 #include<Windows.h>
 #include<tchar.h>
 
+#define ID_CheckBox1 1001
+#define ID_CheckBox2 1002
+#define ID_CheckBox3 1003
+#define ID_CheckBox4 1004
+#define ID_Button 1010
+
 static TCHAR WindowsClass[] = L"win32app";
 static TCHAR Title[] = L"MyApp";
 HINSTANCE hinst;
-RECT desktop;
+RECT desktop, cr;
+HWND checkbox1, checkbox2, checkbox3, checkbox4, button;
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
@@ -73,6 +80,10 @@ int WINAPI WinMain(HINSTANCE hinstance,
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	
+	PAINTSTRUCT ps;
+	HDC hdc;
+	
 	switch (message)
 	{
 
@@ -83,15 +94,80 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 		break;
 
-	case WM_RBUTTONDOWN:
-
-
 	case WM_CREATE:
+
+		GetClientRect(hWnd, &cr);
+
+		checkbox1 = CreateWindowEx(
+			WS_EX_CLIENTEDGE,
+			L"button",
+			L"     С и л ь н ы й",
+			WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX,
+			cr.right / 5,
+			cr.bottom / 5,
+			cr.right / 5,
+			30,
+			hWnd, (HMENU)ID_CheckBox1,
+			hinst,
+			NULL);
+
+		checkbox2 = CreateWindowEx(
+			WS_EX_CLIENTEDGE,
+			L"button",
+			L"     С м е л ы й",
+			WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX,
+			cr.right / 5 * 3,
+			cr.bottom / 5,
+			cr.right / 5,
+			30,
+			hWnd, (HMENU)ID_CheckBox2,
+			hinst,
+			NULL);
+
+		checkbox3 = CreateWindowEx(
+			WS_EX_CLIENTEDGE,
+			L"button",
+			L"     Д о б р ы й",
+			WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX,
+			cr.right / 5,
+			cr.bottom / 5 * 3,
+			cr.right / 5,
+			30,
+			hWnd, (HMENU)ID_CheckBox3,
+			hinst,
+			NULL);
+
+		checkbox4 = CreateWindowEx(
+			WS_EX_CLIENTEDGE,
+			L"button",
+			L"     У м н ы й",
+			WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX,
+			cr.right / 5 * 3,
+			cr.bottom / 5 * 3,
+			cr.right / 5,
+			30,
+			hWnd, (HMENU)ID_CheckBox4,
+			hinst,
+			NULL);
+
+		button = CreateWindowEx(
+			WS_EX_CLIENTEDGE,
+			L"button",
+			L"Выбрать",
+			WS_CHILD | WS_VISIBLE,
+			cr.right / 2 - 8 * 6,
+			cr.bottom - 50,
+			80,
+			30,
+			hWnd,
+			(HMENU)ID_Button,
+			hinst, NULL);
 
 		break;
 
 	case WM_PAINT:
-
+		hdc = BeginPaint(hWnd, &ps);
+		EndPaint(hWnd, &ps);
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
