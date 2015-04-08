@@ -80,17 +80,51 @@ int WINAPI WinMain(HINSTANCE hinstance,
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	
+
 	PAINTSTRUCT ps;
 	HDC hdc;
-	
+
 	switch (message)
 	{
 
 	case WM_COMMAND:
 
 	case BN_CLICKED:
-
+		if (LOWORD(wParam) == ID_Button)
+		{
+			wchar_t str[50];
+			str[0] = '\0';
+			LRESULT res1 = SendMessage(checkbox1, BM_GETCHECK, 0, 0);
+			LRESULT res2 = SendMessage(checkbox2, BM_GETCHECK, 0, 0);
+			LRESULT res3 = SendMessage(checkbox3, BM_GETCHECK, 0, 0);
+			LRESULT res4 = SendMessage(checkbox4, BM_GETCHECK, 0, 0);
+			if (res1 == BST_CHECKED)
+				wcscat_s(str, L"Сильный");
+			if (res2 == BST_CHECKED)
+			{
+				if (str[0] == '\0')
+					wcscat_s(str, L"Смелый");
+				else
+					wcscat_s(str, L", Смелый");
+			}
+			if (res3 == BST_CHECKED)
+			{
+				if (str[0] == '\0')
+					wcscat_s(str, L"Добрый");
+				else
+					wcscat_s(str, L", Добрый");
+			}
+			if (res4 == BST_CHECKED)
+			{
+				if (str[0] == '\0')
+					wcscat_s(str, L"Умный");
+				else
+					wcscat_s(str, L", Умный");
+			}
+			if (str[0] == '\0')
+				wcscat_s(str, L"Ничего не выбрано");
+			MessageBox(hWnd, str, L"", MB_OK);
+		}
 
 		break;
 
